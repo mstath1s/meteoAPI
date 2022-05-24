@@ -25,6 +25,12 @@ def filterResultSet2list(input, keep, remove_l='', remove_r=''):
     
     return list
 
+def meteogrGetCityName(soup):
+    source_city = soup.find_all("h2", class_=re.compile("cityname flleft01"))
+    source_city_list = filterResultSet2list(source_city, '>\w+\s*</h2>', '>', ' </h2')
+    return source_city_list[0]
+
+
 def meteogrGetFirstHour(soup):
     source_hours = soup.find_all("td", class_= re.compile("innerTableCell fulltime"))
     
@@ -61,32 +67,41 @@ def listStr2Flt(list_of_strings):
         list_of_float.append(float(item))
     return list_of_float
 
-def plot2D(x, y, xlabel='', ylabel=''):
-    plt.plot(x, y)  # Plot some data on the axes.
+def plot2D(x, y, xlabel='', ylabel='', title=''):
+    plt.plot(x, y)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
+    plt.title(title)
     plt.show()
 
-def meteoGetTuple(url):
+def meteogrGetTuple(url):
     page = requests.get(url, headers)
     
-    print(page.status_code)
+    if page.status_code==200:
+        print('Success!')
 
     soup = BeautifulSoup(page.content, 'html.parser')
 
+    # Get city name
+    location = meteogrGetCityName(soup)
+    print('Location: ', location)
+
+    # Get humidity from meteo.gr
     humidity = meteogrGetAllHumidity(soup)
 
+    # Get temperature from meteo.gr
     temp = meteogrGetAllTemperature(soup)
 
+    # Get starting time
     time_init = meteogrGetFirstHour(soup)
 
+    # Get windspeed from meteo.gr
     ws = meteogrGetAllWindspeeds(soup)
 
+    # Compute time interval
     hours=[]
     time = datetime.combine(date.today(), time_init)
-
     time_change = timedelta(hours=3)
-
     for i in range(len(temp)):
         hours.append(time)
         time = time + time_change
@@ -114,16 +129,28 @@ def meteoGetTuple(url):
     # print(len(humidity))
     # print(len(ws))
 
-    joined_data = list(zip(hours, temp, humidity, ws))
-    
-    timex = []
-    for hour in hours:
-        timex.append(mktime(hour.timetuple()))
-    
-    plot2D(hours, listStr2Flt(temp), 'date (Y-M-D)', 'temperature  °C')
-    plot2D(hours, listStr2Flt(humidity), 'date (Y-M-D)', 'humidity \%')
+    return location, hours, temp, humidity, ws
 
-    for data in joined_data:
-        print(data)
+
+def meteogrJoinTuple(url):
+    hours, temp, humidity, ws = meteogrGetTuple(url)
+
+    joined_data = list(zip(hours, temp, humidity, ws))
+
+    # convert time to timestamp format
+    # timex = []
+    # for hour in hours:
+    #     timex.append(mktime(hour.timetuple()))
+
+    # for data in joined_data:
+    #     print(data)
 
     return joined_data
+
+
+def meteogrPlotTuple(location, hours, temp, humidity, ws):
+    plot2D(hours, listStr2Flt(temp), 'date (Y-M-D)',
+           'temperature  °C', location)
+    plot2D(hours, listStr2Flt(humidity),
+           'date (Y-M-D)', 'humidity %', location)
+    plot2D(hours, listStr2Flt(ws), 'date (Y-M-D)', 'wind speed Km/h', location)
