@@ -1,8 +1,4 @@
-import requests
-import re
 from meteoAPI import *
-
-from bs4 import BeautifulSoup, ResultSet
 
 if __name__ == "__main__":
 
