@@ -106,7 +106,7 @@ def meteogrGetTuple(url):
         hours.append(time)
         time = time + time_change
 
-    ###
+    ### *** DEBUG ***
     # print('Temperatures')
     # for row in temp:
     #     print(row)
