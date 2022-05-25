@@ -22,3 +22,8 @@
 ```bash
   pip install numpy
 ```
+
+* windrose and openpyxl
+```bash
+pip install windrose openpyxl
+```
