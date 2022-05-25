@@ -1,15 +1,29 @@
 from meteoAPI import *
 
 if __name__ == "__main__":
-
-    url = 'https://www.meteo.gr/cf-en.cfm?city_id=310'
+    ### *** TEST 1 ***
+    url = 'https://www.meteo.gr/cf-en.cfm?city_id=310' # Markoupoulo, Attica
     
-    location, hours, temp, humidity, ws = meteogrGetTuple(url)
+    location, hours, temp, humidity, ws, wd, skyCondition = meteogrGetTuple(url)
     
-    meteogrPlotTuple(location, hours, temp, humidity, ws)
+    # meteogrPlotTuple(location, hours, temp, humidity)
 
-    url = 'https://www.meteo.gr/cf-en.cfm?city_id=191'
+    meteogrPlotWindrose(ws, wd)
 
-    location, hours, temp, humidity, ws = meteogrGetTuple(url)
+    ### *** TEST 2 ***
+    url = 'https://www.meteo.gr/cf-en.cfm?city_id=191' # El. Venizelos, Athens airport
 
-    meteogrPlotTuple(location, hours, temp, humidity, ws)
+    location, hours, temp, humidity, ws, wd, skyCondition = meteogrGetTuple(url)
+
+    meteogrPlotWindrose(ws, wd)
+
+    # meteogrPlotTuple(location, hours, temp, humidity)
+
+    ### *** TEST 3 ***
+    url = 'https://www.meteo.gr/cf-en.cfm?city_id=20' # Santorini, Cyclades
+
+    location, hours, temp, humidity, ws, wd, skyCondition = meteogrGetTuple(url)
+
+    meteogrPlotWindrose(ws, wd)
+
+    # meteogrPlotTuple(location, hours, temp, humidity)
