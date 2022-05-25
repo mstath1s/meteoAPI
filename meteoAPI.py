@@ -17,8 +17,8 @@ def filterResultSet2list(input, keep, remove_l='', remove_r=''):
         filtered = re.search(keep, str(item))
         if filtered:
             filtered = filtered.group(0)
-            filtered = filtered.replace(remove_l,'')
-            filtered = filtered.replace(remove_r,'')
+            filtered = re.sub(remove_l, '', filtered)
+            filtered = re.sub(remove_r, '', filtered)
             list.append(filtered)
         else:
             list.append(0)
@@ -34,7 +34,7 @@ def meteogrGetCityName(soup):
 def meteogrGetFirstHour(soup):
     source_hours = soup.find_all("td", class_= re.compile("innerTableCell fulltime"))
     
-    starting_hour = filterResultSet2list(source_hours[0], '\d\d:\d\d', '', ':\d\d')
+    starting_hour = filterResultSet2list(source_hours[0], '\d\d:\d\d', '', '')
     time_init = starting_hour[0] + ':00'
     time_init = datetime.strptime(time_init,"%X").time()
 
@@ -54,12 +54,23 @@ def meteogrGetAllHumidity(soup):
 
     return source_humidity_list
 
-def meteogrGetAllWindspeeds(soup):
+def meteogrGetAllWindSpeeds(soup):
     source_ws = soup.find_all("td", class_= re.compile("innerTableCell anemosfull"))
     
     source_ws_list = filterResultSet2list(source_ws, '\d* Km/h', '', 'Km/h')
 
     return source_ws_list
+
+
+def meteogrGetAllWindDirections(soup):
+    source_wd = soup.find_all(
+        "td", class_=re.compile("innerTableCell anemosfull"))
+
+    source_wd_list = filterResultSet2list(
+        source_wd, '\d* Bf \w*', '\d* Bf ', '')
+
+    return source_wd_list
+
 
 
 def meteogrGetAllSkyConditions(soup):
@@ -105,7 +116,10 @@ def meteogrGetTuple(url):
     time_init = meteogrGetFirstHour(soup)
 
     # Get windspeed from meteo.gr
-    ws = meteogrGetAllWindspeeds(soup)
+    ws = meteogrGetAllWindSpeeds(soup)
+
+    wd = meteogrGetAllWindDirections(soup)
+    print(wd)
 
     # Get sky conditions
     skyCondition = meteogrGetAllSkyConditions(soup)
@@ -150,9 +164,9 @@ def meteogrGetTuple(url):
 
 
 def meteogrJoinTuple(url):
-    hours, temp, humidity, ws = meteogrGetTuple(url)
+    hours, temp, humidity, ws, skyCondition = meteogrGetTuple(url)
 
-    joined_data = list(zip(hours, temp, humidity, ws))
+    joined_data = list(zip(hours, temp, humidity, ws, skyCondition))
 
     # convert time to timestamp format
     # timex = []
