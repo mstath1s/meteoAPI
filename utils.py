@@ -1,5 +1,10 @@
 from consts import *
 
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import numpy as np
+
+from windrose import WindroseAxes
 
 def filterResultSet2list(input, keep, remove_l='', remove_r=''):
     list = []
@@ -29,7 +34,7 @@ def plot2D(x, y, xlabel='', ylabel='', title=''):
     plt.ylabel(ylabel)
     plt.title(title)
     plt.show()
-    
+
 
 def WindDirTxt2Deg(wd):
     wd_deg = []
@@ -40,3 +45,12 @@ def WindDirTxt2Deg(wd):
             wd_deg.append(0)
 
     return wd_deg
+
+def plotWindrose(ws, wd):
+    ws_flt = listStr2Flt(ws)
+    wd_deg = WindDirTxt2Deg(wd)
+
+    ax = WindroseAxes.from_ax()
+    ax.bar(wd_deg, ws_flt, normed=True, opening=0.8, edgecolor='white')
+    ax.set_legend()
+    plt.show()
