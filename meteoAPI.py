@@ -8,12 +8,6 @@ from headers import headers
 
 from bs4 import BeautifulSoup, ResultSet
 
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
-
-from windrose import WindroseAxes
-
 from consts import *
 from utils import *
 
