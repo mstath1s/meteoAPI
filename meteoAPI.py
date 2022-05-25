@@ -139,13 +139,13 @@ def meteogrGetTuple(url):
     # print(len(humidity))
     # print(len(ws))
 
-    return location, hours, temp, humidity, ws, skyCondition
+    return location, hours, temp, humidity, ws, wd, skyCondition
 
 
 def meteogrJoinTuple(url):
-    hours, temp, humidity, ws, skyCondition = meteogrGetTuple(url)
+    hours, temp, humidity, ws, wd, skyCondition = meteogrGetTuple(url)
 
-    joined_data = list(zip(hours, temp, humidity, ws, skyCondition))
+    joined_data = list(zip(hours, temp, humidity, ws, wd, skyCondition))
 
     # convert time to timestamp format
     # timex = []
@@ -158,7 +158,7 @@ def meteogrJoinTuple(url):
     return joined_data
 
 
-def meteogrPlotTuple(location, hours, temp, humidity, ws):
+def meteogrPlotTuple(location, hours, temp, humidity):
     plot2D(hours, listStr2Flt(temp), 'date (Y-M-D)',
            'temperature  °C', location)
     plot2D(hours, listStr2Flt(humidity),
