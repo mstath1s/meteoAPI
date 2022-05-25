@@ -143,28 +143,35 @@ def meteogrGetTuple(url):
 
 
 def meteogrJoinTuple(url):
-    hours, temp, humidity, ws, wd, skyCondition = meteogrGetTuple(url)
-
+    location, hours, temp, humidity, ws, wd, skyCondition = meteogrGetTuple(url)
     joined_data = list(zip(hours, temp, humidity, ws, wd, skyCondition))
-
-    # convert time to timestamp format
-    # timex = []
-    # for hour in hours:
-    #     timex.append(mktime(hour.timetuple()))
-
-    # for data in joined_data:
-    #     print(data)
 
     return joined_data
 
+def meteogrPrintAllData(url):
+    joined_data = meteogrJoinTuple(url)
+    for data in joined_data:
+        print(data)
 
-def meteogrPlotTuple(location, hours, temp, humidity):
+def meteogrPlotTemperature(temp, hours, location=''):
     plot2D(hours, listStr2Flt(temp), 'date (Y-M-D)',
-           'temperature  °C', location)
+       'temperature  °C', location)
+
+
+def meteogrPlotHumidity(humidity, hours, location=''):
     plot2D(hours, listStr2Flt(humidity),
            'date (Y-M-D)', 'humidity %', location)
+
+
+def meteogrPlotWindSpeed(ws, hours, location=''):
     plot2D(hours, listStr2Flt(ws), 'date (Y-M-D)', 'wind speed Km/h', location)
 
 
 def meteogrPlotWindrose(ws, wd):
     plotWindrose(ws, wd)
+
+
+def meteogrPlotTuple(location, hours, temp, humidity, ws, wd):
+    meteogrPlotTemperature(temp, hours, location)
+    meteogrPlotHumidity(humidity, hours, location)
+    meteogrPlotWindrose(ws, wd)
