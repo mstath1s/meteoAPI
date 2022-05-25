@@ -8,6 +8,8 @@ from windrose import WindroseAxes
 
 from consts import *
 
+import csv 
+
 def filterResultSet2list(input, keep, remove_l='', remove_r=''):
     list = []
     for item in input:
@@ -56,3 +58,11 @@ def plotWindrose(ws, wd):
     ax.bar(wd_deg, ws_flt, normed=True, opening=0.8, edgecolor='white')
     ax.set_legend()
     plt.show()
+
+
+def list2CSV(field_names, input_list, filename='output'):
+    with open(filename, 'w') as f:
+        write = csv.writer(f)
+
+        write.writerow(field_names)
+        write.writerows(input_list)
