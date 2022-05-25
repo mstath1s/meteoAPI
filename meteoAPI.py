@@ -99,9 +99,9 @@ def meteogrGetTuple(url):
 
     # Compute time interval
     date_init = date.today()
-    if time_init.strftime('%H:%M') > '21:00':
+    if (time_init.strftime('%H:%M') == '00:00') & (datetime.now().strftime("%H:%M") < '23:59'):
         date_init = date_init + timedelta(days=1)
-    # print(date_init)
+    print(date_init.strftime('%d/%m/%Y'))
     
     hours=[]
     time = datetime.combine(date_init, time_init)
