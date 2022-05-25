@@ -11,6 +11,8 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
+from consts import *
+
 def filterResultSet2list(input, keep, remove_l='', remove_r=''):
     list=[]
     for item in input:
@@ -115,11 +117,11 @@ def meteogrGetTuple(url):
     # Get starting time
     time_init = meteogrGetFirstHour(soup)
 
-    # Get windspeed from meteo.gr
+    # Get wind speed from meteo.gr
     ws = meteogrGetAllWindSpeeds(soup)
 
+    # Get wind direction from meteo.gr
     wd = meteogrGetAllWindDirections(soup)
-    print(wd)
 
     # Get sky conditions
     skyCondition = meteogrGetAllSkyConditions(soup)
@@ -132,7 +134,7 @@ def meteogrGetTuple(url):
     
     hours=[]
     time = datetime.combine(date_init, time_init)
-    time_change = timedelta(hours=3)
+    time_change = timedelta(hours=METEOGR_TIME_PERIOD_HOURS)
     for i in range(len(temp)):
         hours.append(time)
         time = time + time_change
