@@ -141,21 +141,24 @@ def meteogrJoinTuple(url):
     
     hours_new_format = []
     for hour in hours:
-        hours_new_format.append(hour.strftime(METEOGR_DAYTIME_FORMAT))
+        hours_new_format.append(hour.strftime(METEOGR_DAYTIME_FORMAT_CSV))
 
     joined_data = list(zip(hours_new_format,
                        temp, humidity, ws, wd, skyCondition))
     
-    return joined_data
+    return joined_data, location
 
 def meteogrPrintAllData(url):
-    joined_data = meteogrJoinTuple(url)
+    joined_data, location = meteogrJoinTuple(url)
     for data in joined_data:
         print(data)
 
 
-def meteogrSaveAllDataCSV(url, filename='output.csv'):
-    joined_data = meteogrJoinTuple(url)
+def meteogrSaveAllDataCSV(url, filename=''):
+    joined_data, location = meteogrJoinTuple(url)
+    if not filename:
+        filename = location + '_' + datetime.now().strftime(METEOGR_DAYTIME_FORMAT_FNAME) + '.csv'
+
     field_names = ['Date - Time', 'Temperature °',
                    'Humidity %', 'Wind speed', 'Wind direction', 'Sky conditions']
     list2CSV(field_names, joined_data, filename)
