@@ -167,11 +167,4 @@ def meteogrPlotTuple(location, hours, temp, humidity, ws):
 
 
 def meteogrPlotWindrose(ws, wd):
-
-    wd_deg = WindDirTxt2Deg(wd)
-    ws_flt = listStr2Flt(ws)
-
-    ax = WindroseAxes.from_ax()
-    ax.bar(wd_deg, ws_flt, normed=True, opening=0.8, edgecolor='white')
-    ax.set_legend()
-    plt.show()
+    plotWindrose(ws, wd)
