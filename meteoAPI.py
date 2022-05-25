@@ -61,6 +61,15 @@ def meteogrGetAllWindspeeds(soup):
 
     return source_ws_list
 
+
+def meteogrGetAllSkyConditions(soup):
+    source_skyCondition = soup.find_all(
+        "td", class_=re.compile("innerTableCell PhenomenaSpecialTableCell phenomenafull"))
+    source_skyCondition_list = filterResultSet2list(
+        source_skyCondition, '"phenomeno-name" style="text-transform: uppercase" width="80%">\w*[\s\w*]*', '\"phenomeno-name\" style=\"text-transform: uppercase\" width=\"80%\">', '')
+    
+    return source_skyCondition_list
+
 def listStr2Flt(list_of_strings):
     list_of_float = []
     for item in list_of_strings:
@@ -98,9 +107,17 @@ def meteogrGetTuple(url):
     # Get windspeed from meteo.gr
     ws = meteogrGetAllWindspeeds(soup)
 
+    # Get sky conditions
+    skyCondition = meteogrGetAllSkyConditions(soup)
+
     # Compute time interval
+    date_init = date.today()
+    if time_init.strftime('%H:%M') > '21:00':
+        date_init = date_init + timedelta(days=1)
+    # print(date_init)
+    
     hours=[]
-    time = datetime.combine(date.today(), time_init)
+    time = datetime.combine(date_init, time_init)
     time_change = timedelta(hours=3)
     for i in range(len(temp)):
         hours.append(time)
@@ -129,7 +146,7 @@ def meteogrGetTuple(url):
     # print(len(humidity))
     # print(len(ws))
 
-    return location, hours, temp, humidity, ws
+    return location, hours, temp, humidity, ws, skyCondition
 
 
 def meteogrJoinTuple(url):
