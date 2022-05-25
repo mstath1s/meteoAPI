@@ -159,7 +159,7 @@ def meteogrSaveAllDataCSV(url, filename=''):
     if not filename:
         filename = location + '_' + datetime.now().strftime(METEOGR_DAYTIME_FORMAT_FNAME) + '.csv'
 
-    field_names = ['Date - Time', 'Temperature °',
+    field_names = ['Date - Time', 'Temperature °C',
                    'Humidity %', 'Wind speed', 'Wind direction', 'Sky conditions']
     list2CSV(field_names, joined_data, filename)
 
