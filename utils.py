@@ -1,10 +1,12 @@
-from consts import *
+import re
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
 from windrose import WindroseAxes
+
+from consts import *
 
 def filterResultSet2list(input, keep, remove_l='', remove_r=''):
     list = []
