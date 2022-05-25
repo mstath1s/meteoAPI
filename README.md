@@ -1,8 +1,9 @@
 # meteogrAPI (meteo.gr)
-...
+***TODO***
 
-## 
-...
+##
+
+***TODO***
 
 ## Creator
 * Yannis Marios Papagiannakos
