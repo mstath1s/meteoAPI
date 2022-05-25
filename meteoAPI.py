@@ -1,4 +1,5 @@
 from time import mktime, time
+from traceback import print_tb
 import requests
 import re
 from datetime import date, datetime, time, timedelta
@@ -11,21 +12,10 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
 
-from consts import *
+from windrose import WindroseAxes
 
-def filterResultSet2list(input, keep, remove_l='', remove_r=''):
-    list=[]
-    for item in input:
-        filtered = re.search(keep, str(item))
-        if filtered:
-            filtered = filtered.group(0)
-            filtered = re.sub(remove_l, '', filtered)
-            filtered = re.sub(remove_r, '', filtered)
-            list.append(filtered)
-        else:
-            list.append(0)
-    
-    return list
+from consts import *
+from utils import *
 
 def meteogrGetCityName(soup):
     source_city = soup.find_all("h2", class_=re.compile("cityname flleft01"))
@@ -74,7 +64,6 @@ def meteogrGetAllWindDirections(soup):
     return source_wd_list
 
 
-
 def meteogrGetAllSkyConditions(soup):
     source_skyCondition = soup.find_all(
         "td", class_=re.compile("innerTableCell PhenomenaSpecialTableCell phenomenafull"))
@@ -83,18 +72,6 @@ def meteogrGetAllSkyConditions(soup):
     
     return source_skyCondition_list
 
-def listStr2Flt(list_of_strings):
-    list_of_float = []
-    for item in list_of_strings:
-        list_of_float.append(float(item))
-    return list_of_float
-
-def plot2D(x, y, xlabel='', ylabel='', title=''):
-    plt.plot(x, y)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-    plt.title(title)
-    plt.show()
 
 def meteogrGetTuple(url):
     page = requests.get(url, headers)
@@ -187,3 +164,14 @@ def meteogrPlotTuple(location, hours, temp, humidity, ws):
     plot2D(hours, listStr2Flt(humidity),
            'date (Y-M-D)', 'humidity %', location)
     plot2D(hours, listStr2Flt(ws), 'date (Y-M-D)', 'wind speed Km/h', location)
+
+
+def meteogrPlotWindrose(ws, wd):
+
+    wd_deg = WindDirTxt2Deg(wd)
+    ws_flt = listStr2Flt(ws)
+
+    ax = WindroseAxes.from_ax()
+    ax.bar(wd_deg, ws_flt, normed=True, opening=0.8, edgecolor='white')
+    ax.set_legend()
+    plt.show()
