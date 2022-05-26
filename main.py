@@ -1,4 +1,4 @@
-from meteoAPI import *
+from meteogrAPI import *
 
 if __name__ == "__main__":
     ### *** TEST 1 ***
