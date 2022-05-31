@@ -1,9 +1,13 @@
-# meteogrAPI (meteo.gr)
-***TODO***
+# meteoAPI
+Extract meteorological data from [meteo.gr](https://www.meteo.gr/). More websites will be supported in future releases.
 
-##
+Access the HTML of the webpage for a certain location and, extract useful information/data from it, using the third-party python library, Beautiful Soup, a library for pulling data out of HTML and XML files.
 
-***TODO***
+## Features
+***meteoAPI*** consists of many features, such as getting temperature, humidity, wind speed and direction, and many more. 
+
+The extracted data can be plotted and also saved in <.csv> files.
+
 
 ## Creator
 * Yannis Marios Papagiannakos
