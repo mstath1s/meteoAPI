@@ -66,3 +66,11 @@ def list2CSV(field_names, input_list, filename='output'):
 
         write.writerow(field_names)
         write.writerows(input_list)
+
+def F2C(tempF):
+    return round((tempF - 32) * 0.5555)
+
+# # Test utils
+# if __name__ == "__main__":
+#     print(F2C(0))
+#     print(F2C(32))
