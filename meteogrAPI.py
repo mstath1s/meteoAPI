@@ -13,7 +13,7 @@ from utils import *
 
 def meteogrGetCityName(soup):
     source_city = soup.find_all("h2", class_=re.compile("cityname flleft01"))
-    source_city_list = filterResultSet2list(source_city, '>\w+\s*</h2>', '>', ' </h2')
+    source_city_list = filterResultSet2list(source_city, '>\w+[\s*\w+]*\s*</h2>', '>', ' </h2')
     return source_city_list[0]
 
 
