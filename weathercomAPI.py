@@ -11,6 +11,7 @@ from headers import headers
 from bs4 import BeautifulSoup, ResultSet
 
 from consts import *
+from meteogrAPI import meteogrGetAllWindDirections
 from utils import *
 
 
@@ -107,7 +108,7 @@ def wethercomGetCloudCover(soup):
     return source_cloudCover_list
 
 
-def meteogrGetAllWindSpeeds(soup):
+def weathercomGetAllWindSpeeds(soup):
     source_ws = soup.find_all(
         "span", class_=re.compile("Wind--windWrapper--3aqXJ DetailsTable--value--1q_qD"))
     # print(source_ws)
@@ -155,4 +156,6 @@ def weathercomGetTuple(url):
 
     source_cloudCover = wethercomGetCloudCover(soup)
 
-    ws = meteogrGetAllWindSpeeds(soup)
+    ws = weathercomGetAllWindSpeeds(soup)
+
+    wd = weathercomGetAllWindDirections(soup)
