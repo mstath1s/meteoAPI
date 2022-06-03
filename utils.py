@@ -31,6 +31,11 @@ def listStr2Flt(list_of_strings):
         list_of_float.append(float(item))
     return list_of_float
 
+def listStr2Int(list_of_strings):
+    list_of_int = []
+    for item in list_of_strings:
+        list_of_int.append(int(item))
+    return list_of_int
 
 def plot2D(x, y, xlabel='', ylabel='', title=''):
     plt.plot(x, y)
@@ -69,6 +74,12 @@ def list2CSV(field_names, input_list, filename='output'):
 
 def F2C(tempF):
     return round((tempF - 32) * 0.5555)
+
+def mph2kmh(mph):
+    return mph * 1.60934
+
+def in2cm(inches):
+    return inches * 2.54
 
 # # Test utils
 # if __name__ == "__main__":
