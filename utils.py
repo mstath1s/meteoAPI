@@ -82,10 +82,10 @@ def in2cm(inches):
     return inches * 2.54
 
 def printErrorMsg(message):
-    print('\x1b[0;37;41m' + message + '\x1b[0m')
+    print('\x1b' + PRINT_ERROR_COLOR + message + '\x1b[0m')
 
 def printSuccessMsg(message):
-    print('\x1b[6;30;42m' + message + '\x1b[0m')
+    print('\x1b' + PRINT_SUCCS_COLOR + message + '\x1b[0m')
 
 
 # Test utils
