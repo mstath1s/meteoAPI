@@ -80,6 +80,60 @@ def weathercomGetAllTemperature(soup):
     return temp
 
 
+def weathercomGetAllSkyConditions(soup):
+    source_skyCondition = soup.find_all(
+        "span", class_=re.compile("DetailsSummary--extendedData--365A_"))
+    source_skyCondition_list = filterResultSet2list(
+        source_skyCondition, '<span class="DetailsSummary--extendedData--365A_">\w+[\s*\w+]*|[/w+]*</span>', '<span class="DetailsSummary--extendedData--365A_">', '</span>')
+    # print(source_skyCondition_list)
+
+    return source_skyCondition_list
+
+
+def wethercomGetCloudCover(soup):
+    source_cloudCover = soup.find_all(
+        "li", class_=re.compile("DetailsTable--listItem--2yVyz"))
+    # print(source_cloudCover)
+    source_cloudCover_list = filterResultSet2list(
+        source_cloudCover, 
+        '<span class="DetailsTable--label--3Va-t" data-testid="CloudCoverTitle">Cloud Cover</span><span class="DetailsTable--value--1q_qD" data-testid="PercentageValue">\d+%</span>', 
+        '<span class="DetailsTable--label--3Va-t" data-testid="CloudCoverTitle">Cloud Cover</span><span class="DetailsTable--value--1q_qD" data-testid="PercentageValue">', 
+        '%</span>')
+
+    source_cloudCover_list = [item for item in source_cloudCover_list if item != 0]
+
+    # print(source_cloudCover_list)
+
+    return source_cloudCover_list
+
+
+def meteogrGetAllWindSpeeds(soup):
+    source_ws = soup.find_all(
+        "span", class_=re.compile("Wind--windWrapper--3aqXJ DetailsTable--value--1q_qD"))
+    # print(source_ws)
+    if WEATHERCOM_UNITS_USA:
+        source_ws_list = filterResultSet2list(
+            source_ws,
+            '<!-- -->\d+ mph',
+            '<!-- -->',
+            ' mph')
+        source_ws_int = []
+        for item in source_ws_list:
+            source_ws_int.append(round(mph2kmh(int(item))))
+            
+    else:
+        source_ws_list = filterResultSet2list(
+            source_ws,
+            '<!-- -->\d+ km/h',
+            '<!-- -->',
+            ' km/h')
+        source_ws_int = listStr2Int(source_ws_list)
+
+    # print(source_ws_int)
+
+    return source_ws_int
+
+
 def weathercomGetTuple(url):
     page = requests.get(url, headers)
 
@@ -95,4 +149,10 @@ def weathercomGetTuple(url):
     time = weathercomGetAllHours(soup)
 
     temp = weathercomGetAllTemperature(soup)
-    print(temp)
+    # print(temp)
+
+    skyCondition = weathercomGetAllSkyConditions(soup)
+
+    source_cloudCover = wethercomGetCloudCover(soup)
+
+    ws = meteogrGetAllWindSpeeds(soup)
