@@ -310,7 +310,12 @@ def weathercomPlotWindrose(ws, wd):
     plotWindrose(ws, wd)
 
 
-def weathercomPlotTuple(location, hours, temp, humidity, ws, wd):
+def weathercomPlotUVIndex(uv_idx, hours, location=''):
+    plot2D(hours, uv_idx, 'date (Y-M-D)', 'UV index', location)
+
+
+def weathercomPlotTuple(location, hours, temp, humidity, ws, wd, uv_idx):
     weathercomPlotTemperature(temp, hours, location)
     weathercomPlotHumidity(humidity, hours, location)
     weathercomPlotWindrose(ws, wd)
+    weathercomPlotUVIndex(uv_idx, hours)
