@@ -294,8 +294,8 @@ def weathercomSaveAllDataCSV(url, filename=''):
         filename = location + '_' + \
             datetime.now().strftime(WEATHERCOM_DAYTIME_FORMAT_FNAME) + '.csv'
 
-    field_names = ['Date - Time', 'Temperature °C',
-                   'Humidity %', 'Wind speed', 'Wind direction', 'Sky conditions', 'Cloud Cover', 'UV Index', 'Rain Amount']
+    field_names = ['Date - Time', 'Temperature (°C)',
+                   'Humidity (%)', 'Wind speed (km/h)', 'Wind direction', 'Sky conditions', 'Cloud Cover (%)', 'UV Index (/10)', 'Rain Amount (cm)']
     list2CSV(field_names, joined_data, filename)
 
 
