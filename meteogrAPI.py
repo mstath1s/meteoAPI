@@ -31,21 +31,21 @@ def meteogrGetAllTemperature(soup):
     
     source_celcius_list = filterResultSet2list(source_celcius, '>\d*<', '<', '>')
     
-    return source_celcius_list
+    return listStr2Flt(source_celcius_list)
 
 def meteogrGetAllHumidity(soup):
     source_humidity = soup.find_all("td", class_= re.compile("innerTableCell hidden-xs"))
 
     source_humidity_list = filterResultSet2list(source_humidity, 'humidity\">\d*%<','humidity\">','%<')
 
-    return source_humidity_list
+    return listStr2Flt(source_humidity_list)
 
 def meteogrGetAllWindSpeeds(soup):
     source_ws = soup.find_all("td", class_= re.compile("innerTableCell anemosfull"))
     
     source_ws_list = filterResultSet2list(source_ws, '\d* Km/h', '', 'Km/h')
 
-    return source_ws_list
+    return listStr2Flt(source_ws_list)
 
 
 def meteogrGetAllWindDirections(soup):
@@ -164,17 +164,17 @@ def meteogrSaveAllDataCSV(url, filename=''):
     list2CSV(field_names, joined_data, filename)
 
 def meteogrPlotTemperature(temp, hours, location=''):
-    plot2D(hours, listStr2Flt(temp), 'date (Y-M-D)',
+    plot2D(hours, temp, 'date (Y-M-D)',
        'temperature  °C', location)
 
 
 def meteogrPlotHumidity(humidity, hours, location=''):
-    plot2D(hours, listStr2Flt(humidity),
+    plot2D(hours, humidity,
            'date (Y-M-D)', 'humidity %', location)
 
 
 def meteogrPlotWindSpeed(ws, hours, location=''):
-    plot2D(hours, listStr2Flt(ws), 'date (Y-M-D)', 'wind speed Km/h', location)
+    plot2D(hours, ws, 'date (Y-M-D)', 'wind speed Km/h', location)
 
 
 def meteogrPlotWindrose(ws, wd):
