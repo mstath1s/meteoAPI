@@ -51,14 +51,14 @@ def weathercomGetAllHours(soup):
     time_change = timedelta(hours=WEATHERCOM_TIME_PERIOD_HOURS)
 
     time = []
+    time_init = datetime.combine(date_init, time_init.time())
+
     for hour in soup.find_all(
             'h3', class_='DetailsSummary--daypartName--2FBp2'):
         tmp = re.search('\d* [a|p]m', str(hour))
         if tmp:
-            tmp = datetime.combine(date_init, time_init.time())
+            time.append(time_init)
             time_init = time_init + time_change
-
-            time.append(tmp)
 
     return time
 
@@ -223,7 +223,7 @@ def weathercomGetAllRain(soup):
 
         source_rain_int = listStr2Flt(source_rain_list)
 
-    print(source_rain_int)
+    # print(source_rain_int)
 
     return source_rain_int
 
@@ -257,3 +257,60 @@ def weathercomGetTuple(url):
     uv_idx = weathercomGetAllUvIndices(soup)
 
     rain_amount = weathercomGetAllRain(soup)
+
+    return location, time, temp, humidity, ws, wd, skyCondition, source_cloudCover, uv_idx, rain_amount
+
+
+def weathercomJoinTuple(url):
+    location, time, temp, humidity, ws, wd, skyCondition, source_cloudCover, uv_idx, rain_amount = weathercomGetTuple(
+        url)
+
+    hours_new_format = []
+    for hour in time:
+        hours_new_format.append(hour.strftime(WEATHERCOM_DAYTIME_FORMAT_CSV))
+
+    joined_data = list(zip(hours_new_format,
+                       temp, humidity, ws, wd, skyCondition, source_cloudCover, uv_idx, rain_amount))
+
+    return joined_data, location
+
+
+def weathercomPrintAllData(url):
+    joined_data, location = weathercomJoinTuple(url)
+    for data in joined_data:
+        print(data)
+
+
+def weathercomSaveAllDataCSV(url, filename=''):
+    joined_data, location = weathercomJoinTuple(url)
+    if not filename:
+        filename = location + '_' + \
+            datetime.now().strftime(WEATHERCOM_DAYTIME_FORMAT_FNAME) + '.csv'
+
+    field_names = ['Date - Time', 'Temperature °C',
+                   'Humidity %', 'Wind speed', 'Wind direction', 'Sky conditions', 'Cloud Cover', 'UV Index', 'Rain Amount']
+    list2CSV(field_names, joined_data, filename)
+
+
+def weathercomPlotTemperature(temp, hours, location=''):
+    plot2D(hours, temp, 'date (Y-M-D)',
+           'temperature  °C', location)
+
+
+def weathercomPlotHumidity(humidity, hours, location=''):
+    plot2D(hours, humidity,
+           'date (Y-M-D)', 'humidity %', location)
+
+
+def weathercomPlotWindSpeed(ws, hours, location=''):
+    plot2D(hours, ws, 'date (Y-M-D)', 'wind speed Km/h', location)
+
+
+def weathercomPlotWindrose(ws, wd):
+    plotWindrose(ws, wd)
+
+
+def weathercomPlotTuple(location, hours, temp, humidity, ws, wd):
+    weathercomPlotTemperature(temp, hours, location)
+    weathercomPlotHumidity(humidity, hours, location)
+    weathercomPlotWindrose(ws, wd)
