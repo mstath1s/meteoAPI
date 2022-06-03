@@ -70,15 +70,15 @@ def meteogrGetAllSkyConditions(soup):
 def meteogrGetTuple(url):
     # check compatibility of url
     if re.match('https://www.meteo.gr/cf-en', str(url)):
-        print('Link:<'+url+'> is correct')
+        printSuccessMsg('Link:<'+url+'> is correct')
     else:
-        print('Link:<'+url+'> is incorrect')
+        printErrorMsg('Link:<'+url+'> is incorrect')
         exit()
 
     page = requests.get(url, headers)
     
     if page.status_code==200:
-        print('Success!')
+        printSuccessMsg('Success!')
 
     soup = BeautifulSoup(page.content, 'html.parser')
 
