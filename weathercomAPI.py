@@ -186,9 +186,46 @@ def weathercomGetAllUvIndices(soup):
     source_uv_list = [
         item for item in source_uv_list if item != 0]
 
-    print(source_uv_list)
+    # print(source_uv_list)
 
     return listStr2Int(source_uv_list)
+
+
+def weathercomGetAllRain(soup):
+    source_rain = soup.find_all(
+        "div", class_=re.compile("DetailsTable--field--3ZKJV"))
+    # print(source_rain)
+    if WEATHERCOM_UNITS_USA:
+        source_rain_list = filterResultSet2list(
+            source_rain,
+            'data-testid="AccumulationValue">[0.]*\d+ in</span></div>',
+            'data-testid="AccumulationValue">',
+            ' in</span></div>')
+        
+        # Remove zeros
+        source_rain_list = [
+            item for item in source_rain_list if item != 0]
+        
+        source_rain_int = []
+        for item in source_rain_list:
+            source_rain_int.append(round(in2cm(float(item)), 5))
+
+    else:
+        source_rain_list = filterResultSet2list(
+            source_rain,
+            'data-testid="AccumulationValue">[0.]*\d+ cm</span></div>',
+            'data-testid="AccumulationValue">',
+            ' in</span></div>')
+
+        # Remove zeros
+        source_rain_list = [
+            item for item in source_rain_list if item != 0]
+
+        source_rain_int = listStr2Flt(source_rain_list)
+
+    print(source_rain_int)
+
+    return source_rain_int
 
 
 def weathercomGetTuple(url):
@@ -218,3 +255,5 @@ def weathercomGetTuple(url):
     wd = weathercomGetAllWindDirections(soup)
 
     uv_idx = weathercomGetAllUvIndices(soup)
+
+    rain_amount = weathercomGetAllRain(soup)
