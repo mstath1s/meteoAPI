@@ -90,6 +90,11 @@ def printSuccessMsg(message):
 
 # Test utils
 if __name__ == "__main__":
+    print(WindDirTxt2Deg('N'))
+    print(WindDirTxt2Deg('E'))
+
+    print(WindDirTxt2Deg('CALM'))
+
     print(F2C(0))
     print(F2C(32))
 
