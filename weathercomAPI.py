@@ -73,7 +73,7 @@ def weathercomGetAllTemperature(soup):
     temp = []
 
     for t in source_celcius_list:
-        if WEATHERCOM_TEMP_UNIT_C != 1:
+        if WEATHERCOM_UNITS_USA == 1:
             temp.append(F2C(int(t)))
         else:
             temp.append(int(t))
