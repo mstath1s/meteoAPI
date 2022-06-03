@@ -33,7 +33,7 @@ The extracted data can be plotted and also saved in <.csv> files.
 pip install windrose openpyxl
 ```
 
-OR use file requirements.txt
+OR use the file: requirements.txt
 ```bash
   pip install -r requirements.txt
 ```
