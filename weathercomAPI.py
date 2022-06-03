@@ -95,7 +95,7 @@ def weathercomGetAllHumidity(soup):
     source_humidity_list = [
         item for item in source_humidity_list if item != 0]
 
-    print(source_humidity_list)
+    # print(source_humidity_list)
 
     return listStr2Flt(source_humidity_list)
 
@@ -169,6 +169,28 @@ def weathercomGetAllWindDirections(soup):
 
     return source_wd_list
 
+
+def weathercomGetAllUvIndices(soup):
+    source_uv = soup.find_all(
+        "div", class_=re.compile("DetailsTable--field--3ZKJV"))
+
+    # print(source_uv)
+
+    source_uv_list = filterResultSet2list(
+        source_uv,
+        '<span class="DetailsTable--value--1q_qD" data-testid="UVIndexValue">\d+ of 10</span></div>',
+        '<span class="DetailsTable--value--1q_qD" data-testid="UVIndexValue">',
+        ' of 10</span></div>')
+    
+    # Remove zeros
+    source_uv_list = [
+        item for item in source_uv_list if item != 0]
+
+    print(source_uv_list)
+
+    return listStr2Int(source_uv_list)
+
+
 def weathercomGetTuple(url):
     page = requests.get(url, headers)
 
@@ -194,3 +216,5 @@ def weathercomGetTuple(url):
     ws = weathercomGetAllWindSpeeds(soup)
 
     wd = weathercomGetAllWindDirections(soup)
+
+    uv_idx = weathercomGetAllUvIndices(soup)
