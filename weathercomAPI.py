@@ -81,6 +81,25 @@ def weathercomGetAllTemperature(soup):
     return temp
 
 
+def weathercomGetAllHumidity(soup):
+    source_humidity = soup.find_all(
+        "div", class_=re.compile("DetailsTable--field--3ZKJV"))
+
+    source_humidity_list = filterResultSet2list(
+        source_humidity, 
+        'data-testid="HumidityTitle">Humidity</span><span class="DetailsTable--value--1q_qD" data-testid="PercentageValue">\d+%</span></div>',
+        'data-testid="HumidityTitle">Humidity</span><span class="DetailsTable--value--1q_qD" data-testid="PercentageValue">',
+        '%</span></div>')
+
+    # remove zeros
+    source_humidity_list = [
+        item for item in source_humidity_list if item != 0]
+
+    print(source_humidity_list)
+
+    return listStr2Flt(source_humidity_list)
+
+
 def weathercomGetAllSkyConditions(soup):
     source_skyCondition = soup.find_all(
         "span", class_=re.compile("DetailsSummary--extendedData--365A_"))
@@ -101,6 +120,7 @@ def wethercomGetCloudCover(soup):
         '<span class="DetailsTable--label--3Va-t" data-testid="CloudCoverTitle">Cloud Cover</span><span class="DetailsTable--value--1q_qD" data-testid="PercentageValue">', 
         '%</span>')
 
+    # Remove zeros
     source_cloudCover_list = [item for item in source_cloudCover_list if item != 0]
 
     # print(source_cloudCover_list)
@@ -164,7 +184,8 @@ def weathercomGetTuple(url):
     time = weathercomGetAllHours(soup)
 
     temp = weathercomGetAllTemperature(soup)
-    # print(temp)
+    
+    humidity = weathercomGetAllHumidity(soup)
 
     skyCondition = weathercomGetAllSkyConditions(soup)
 
