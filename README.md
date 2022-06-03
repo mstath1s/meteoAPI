@@ -1,5 +1,5 @@
 # meteoAPI
-Extract meteorological data from [meteo.gr](https://www.meteo.gr/). More websites will be supported in future releases.
+Extract meteorological data from [meteo.gr](https://www.meteo.gr/) and [weather.com](https://weather.com/) . More websites will be supported in future releases.
 
 Access the HTML of the webpage for a certain location and, extract useful information/data from it, using the third-party python library, Beautiful Soup, a library for pulling data out of HTML and XML files.
 
