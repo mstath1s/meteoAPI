@@ -229,6 +229,13 @@ def weathercomGetAllRain(soup):
 
 
 def weathercomGetTuple(url):
+    # check compatibility of url
+    if re.match('https://weather.com/weather/hourbyhour/[a-zA-Z0-9_]*', str(url)):
+        print('Link:<'+url+'> is correct')
+    else:
+        print('Link:<'+url+'> is incorrect')
+        exit()
+
     page = requests.get(url, headers)
 
     if page.status_code == 200:
