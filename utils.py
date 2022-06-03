@@ -81,7 +81,22 @@ def mph2kmh(mph):
 def in2cm(inches):
     return inches * 2.54
 
-# # Test utils
-# if __name__ == "__main__":
-#     print(F2C(0))
-#     print(F2C(32))
+def printErrorMsg(message):
+    print('\x1b[0;37;41m' + message + '\x1b[0m')
+
+def printSuccessMsg(message):
+    print('\x1b[6;30;42m' + message + '\x1b[0m')
+
+
+# Test utils
+if __name__ == "__main__":
+    print(F2C(0))
+    print(F2C(32))
+
+    mph2kmh(1)
+
+    in2cm(1)
+
+    printErrorMsg('error')
+
+    printSuccessMsg('success')
