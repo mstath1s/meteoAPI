@@ -135,6 +135,20 @@ def weathercomGetAllWindSpeeds(soup):
     return source_ws_int
 
 
+def weathercomGetAllWindDirections(soup):
+    source_wd = soup.find_all(
+        "span", class_=re.compile("Wind--windWrapper--3aqXJ DetailsTable--value--1q_qD"))
+
+    source_wd_list = filterResultSet2list(
+        source_wd,
+        '\w+ <!-- -->\d+',
+        '',
+        ' <!-- -->\d+')
+    
+    # print(source_wd_list)
+
+    return source_wd_list
+
 def weathercomGetTuple(url):
     page = requests.get(url, headers)
 
