@@ -2,6 +2,13 @@
 
 WIND_DIRECTION = ['N', 'NNE', 'NE', 'ENE', 'E', 'ESE', 'SE', 'SSE', 'S', 'SSW', 'SW', 'WSW', 'W', 'WNW', 'NW', 'NNW']
 
+### ROUNDED DIGITS The number of decimals to use when rounding the number
+
+ROUND_DIGITS_TEMP_F = 0
+
+ROUND_DIGITS_KMH = 0
+
+ROUND_DIGITS_MM = 4
 
 ### STRING FORMAT
 

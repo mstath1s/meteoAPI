@@ -105,13 +105,13 @@ def list2CSV(field_names, input_list, filename='output'):
         write.writerows(input_list)
 
 def F2C(tempF):
-    return round((tempF - 32) * 0.5555)
+    return round((tempF - 32) * 0.5555, ROUND_DIGITS_TEMP_F)
 
 def mph2kmh(mph):
-    return mph * 1.60934
+    return round(mph * 1.60934, ROUND_DIGITS_KMH)
 
 def in2mm(inches):
-    return inches * 2.54 * 10
+    return round(inches * 25.4, ROUND_DIGITS_MM)
 
 def printErrorMsg(message):
     print('\x1b' + PRINT_ERROR_COLOR + message + '\x1b[0m')
@@ -134,7 +134,7 @@ if __name__ == "__main__":
 
     print(in2mm(0.08))
 
-    print(in2mm(0.02))
+    print(in2mm(0.09))
 
     printErrorMsg('error')
 
