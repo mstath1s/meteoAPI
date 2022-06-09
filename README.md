@@ -10,13 +10,13 @@ The extracted data can be plotted and also saved in <.csv> files.
 
 ## Demo ([Kaunas, Kaunas, Lithuania](https://weather.com/weather/hourbyhour/l/c0ad3acc0ae559d552ded89fb4af50e09b2063ef1ffa2bb7305acf6083011ea4))
 ### Temperature vs. daytime
-![Screenshot](demo/kaunas_temp.png)
+![Screenshot](demo/Kaunas_temp.png)
 ### Humidity vs. daytime
-![Screenshot](demo/kaunas_humidity.png)
+![Screenshot](demo/Kaunas_humidity.png)
 ### UV index vs. daytime
-![Screenshot](demo/kaunas_uvidx.png)
+![Screenshot](demo/Kaunas_uvidx.png)
 ### Wind rose diagram
-![Screenshot](demo/kaunas_winddirection.png)
+![Screenshot](demo/Kaunas_winddirection.png)
 
 ## Creator
 * Yannis Marios Papagiannakos
