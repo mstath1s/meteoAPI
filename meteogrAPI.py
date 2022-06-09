@@ -170,25 +170,47 @@ def meteogrSaveAllDataCSV(url, filename=''):
                    'Humidity (%)', 'Wind speed (km/h)', 'Wind direction', 'Sky conditions']
     list2CSV(field_names, joined_data, filename)
 
-def meteogrPlotTemperature(temp, hours, location=''):
+
+def meteogrPlotTemperature(temp, hours, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_temp' + '.png'
+
     plot2D(hours, temp, 'date (Y-M-D)',
-       'temperature  °C', location)
+           'temperature  °C', location, timedelta(hours=METEOGR_TIME_PERIOD_HOURS), METEOGR_DAYTIME_FORMAT_FIG, savefig, filename)
 
 
-def meteogrPlotHumidity(humidity, hours, location=''):
+def meteogrPlotHumidity(humidity, hours, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_humidity' + '.png'
+
     plot2D(hours, humidity,
-           'date (Y-M-D)', 'humidity %', location)
+           'date (Y-M-D)', 'humidity %', location, timedelta(hours=METEOGR_TIME_PERIOD_HOURS), METEOGR_DAYTIME_FORMAT_FIG, savefig, filename)
 
 
-def meteogrPlotWindSpeed(ws, hours, location=''):
-    plot2D(hours, ws, 'date (Y-M-D)', 'wind speed Km/h', location)
+def meteogrPlotWindSpeed(ws, hours, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_windspeed' + '.png'
+
+    plot2D(hours, ws, 'date (Y-M-D)', 'wind speed Km/h',
+           location, timedelta(hours=METEOGR_TIME_PERIOD_HOURS), METEOGR_DAYTIME_FORMAT_FIG, savefig, filename)
 
 
-def meteogrPlotWindrose(ws, wd):
-    plotWindrose(ws, wd)
+def meteogrPlotWindrose(ws, wd, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_winddirection' + '.png'
+
+    plotWindrose(ws, wd, savefig, filename)
 
 
-def meteogrPlotTuple(location, hours, temp, humidity, ws, wd):
-    meteogrPlotTemperature(temp, hours, location)
-    meteogrPlotHumidity(humidity, hours, location)
-    meteogrPlotWindrose(ws, wd)
+def meteogrPlotTuple(location, hours, temp, humidity, ws, wd, savefig=False):
+    meteogrPlotTemperature(temp, hours, location, savefig)
+    meteogrPlotHumidity(humidity, hours, location, savefig)
+    meteogrPlotWindrose(ws, wd, location, savefig)
+
+
+def meteogrPlotTupleAndSaveFigure(location, hours, temp, humidity, ws, wd):
+    meteogrPlotTuple(location, hours, temp, humidity, ws, wd, True)
