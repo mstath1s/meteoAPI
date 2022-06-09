@@ -299,30 +299,56 @@ def weathercomSaveAllDataCSV(url, filename=''):
     list2CSV(field_names, joined_data, filename)
 
 
-def weathercomPlotTemperature(temp, hours, location=''):
-    plot2D(hours, temp, 'date (Y-M-D)',
-           'temperature  °C', location)
+def weathercomPlotTemperature(temp, hours, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_temp' + '.png'
+
+    plot2D(hours, temp, 'datetime (M-D H)',
+           'temperature  °C', location, timedelta(hours=WEATHERCOM_TIME_PERIOD_HOURS), WEATHERCOM_DAYTIME_FORMAT_FIG, savefig, filename)
 
 
-def weathercomPlotHumidity(humidity, hours, location=''):
+def weathercomPlotHumidity(humidity, hours, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_humidity' + '.png'
+    
     plot2D(hours, humidity,
-           'date (Y-M-D)', 'humidity %', location)
+                 'datetime (M-D H)', 'humidity %', location, timedelta(hours=WEATHERCOM_TIME_PERIOD_HOURS), WEATHERCOM_DAYTIME_FORMAT_FIG, savefig, filename)
 
 
-def weathercomPlotWindSpeed(ws, hours, location=''):
-    plot2D(hours, ws, 'date (Y-M-D)', 'wind speed Km/h', location)
+def weathercomPlotWindSpeed(ws, hours, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_windspeed' + '.png'
+    
+    plot2D(hours, ws, 
+                'datetime (M-D H)', 'wind speed Km/h', location, timedelta(hours=WEATHERCOM_TIME_PERIOD_HOURS), WEATHERCOM_DAYTIME_FORMAT_FIG, savefig, filename)
 
 
-def weathercomPlotWindrose(ws, wd):
-    plotWindrose(ws, wd)
+def weathercomPlotWindrose(ws, wd, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_winddirection' + '.png'
+
+    plotWindrose(ws, wd, savefig, filename)
 
 
-def weathercomPlotUVIndex(uv_idx, hours, location=''):
-    plot2D(hours, uv_idx, 'date (Y-M-D)', 'UV index', location)
+def weathercomPlotUVIndex(uv_idx, hours, location='', savefig=False, filename=''):
+    if savefig == True:
+        if filename == '':
+            filename = location + '_uvidx' + '.png'
+
+    plot2D(hours, uv_idx, 'datetime (M-D H)', 'UV index',
+          location, timedelta(hours=WEATHERCOM_TIME_PERIOD_HOURS), WEATHERCOM_DAYTIME_FORMAT_FIG, savefig, filename)
+
+def weathercomPlotTuple(location, hours, temp, humidity, ws, wd, uv_idx, savefig=False):
+    weathercomPlotTemperature(temp, hours, location, savefig)
+    weathercomPlotHumidity(humidity, hours, location, savefig)
+    weathercomPlotWindrose(ws, wd, location, savefig)
+    weathercomPlotUVIndex(uv_idx, hours, location, savefig)
 
 
-def weathercomPlotTuple(location, hours, temp, humidity, ws, wd, uv_idx):
-    weathercomPlotTemperature(temp, hours, location)
-    weathercomPlotHumidity(humidity, hours, location)
-    weathercomPlotWindrose(ws, wd)
-    weathercomPlotUVIndex(uv_idx, hours)
+def weathercomPlotTupleAndSaveFigure(location, hours, temp, humidity, ws, wd, uv_idx):
+    weathercomPlotTuple(location, hours, temp, humidity,
+                        ws, wd, uv_idx, True)
