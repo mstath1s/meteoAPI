@@ -110,8 +110,8 @@ def F2C(tempF):
 def mph2kmh(mph):
     return mph * 1.60934
 
-def in2cm(inches):
-    return inches * 2.54
+def in2mm(inches):
+    return inches * 2.54 * 10
 
 def printErrorMsg(message):
     print('\x1b' + PRINT_ERROR_COLOR + message + '\x1b[0m')
@@ -130,9 +130,11 @@ if __name__ == "__main__":
     print(F2C(0))
     print(F2C(32))
 
-    mph2kmh(1)
+    print(mph2kmh(1))
 
-    in2cm(1)
+    print(in2mm(0.08))
+
+    print(in2mm(0.02))
 
     printErrorMsg('error')
 
