@@ -56,6 +56,8 @@ def plot2D(x, y, xlabel='', ylabel='', title='', step=0, dtm_fmt='', savefig=Fal
         plt.gca().xaxis.set_major_formatter(dtFmt)
     plt.title(title)
 
+    plt.grid()
+
     if savefig == True:
         if filename == '':
             filename = 'figure.png'
