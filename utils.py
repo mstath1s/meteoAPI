@@ -2,7 +2,12 @@ import re
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.dates as pltDates
+from matplotlib.ticker import (MultipleLocator, FormatStrFormatter,
+                               AutoMinorLocator)
+
 import numpy as np
+# from datetime import date, datetime, time, timedelta
 
 from windrose import WindroseAxes
 
@@ -37,12 +42,29 @@ def listStr2Int(list_of_strings):
         list_of_int.append(int(item))
     return list_of_int
 
-def plot2D(x, y, xlabel='', ylabel='', title=''):
+def plot2D(x, y, xlabel='', ylabel='', title='', step=0, dtm_fmt='', savefig=False, filename=''):
+    fig = plt.figure(figsize=FIG_SIZE)
     plt.plot(x, y)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
+    if step != 0:
+        plt.xticks(np.arange(x[0], x[-1], step))
+        plt.xticks(rotation=45, ha='right')
+    if dtm_fmt != '':
+        dtFmt = pltDates.DateFormatter(
+            dtm_fmt)  # define the formatting
+        plt.gca().xaxis.set_major_formatter(dtFmt)
     plt.title(title)
-    plt.show()
+
+    if savefig == True:
+        if filename == '':
+            filename = 'figure.png'
+        plt.savefig(filename, dpi=FIG_DPI)     
+
+    else:
+        plt.show()
+
+    # return fig
 
 
 def WindDirTxt2Deg(wd):
@@ -55,15 +77,25 @@ def WindDirTxt2Deg(wd):
 
     return wd_deg
 
-def plotWindrose(ws, wd):
+
+def plotWindrose(ws, wd, savefig=False, filename=''):
+    fig = plt.figure(figsize=FIG_SIZE)
     ws_flt = listStr2Flt(ws)
     wd_deg = WindDirTxt2Deg(wd)
 
     ax = WindroseAxes.from_ax()
     ax.bar(wd_deg, ws_flt, normed=True, opening=0.8, edgecolor='white')
     ax.set_legend()
-    plt.show()
 
+    if savefig == True:
+        if filename == '':
+            filename = 'figure.png'
+        plt.savefig(filename, dpi=FIG_DPI)
+
+    else:
+        plt.show()
+
+    # return fig
 
 def list2CSV(field_names, input_list, filename='output'):
     with open(filename, 'w') as f:
