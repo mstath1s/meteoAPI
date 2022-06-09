@@ -208,14 +208,14 @@ def weathercomGetAllRain(soup):
         
         source_rain_int = []
         for item in source_rain_list:
-            source_rain_int.append(round(in2cm(float(item)), 5))
+            source_rain_int.append(round(in2mm(float(item)), 5))
 
     else:
         source_rain_list = filterResultSet2list(
             source_rain,
-            'data-testid="AccumulationValue">[0.]*\d+ cm</span></div>',
+            'data-testid="AccumulationValue">[0.]*\d+ \w*m</span></div>',
             'data-testid="AccumulationValue">',
-            ' in</span></div>')
+            ' \w*m</span></div>')
 
         # Remove zeros
         source_rain_list = [
@@ -294,8 +294,12 @@ def weathercomSaveAllDataCSV(url, filename=''):
         filename = location + '_' + \
             datetime.now().strftime(WEATHERCOM_DAYTIME_FORMAT_FNAME) + '.csv'
 
-    field_names = ['Date - Time', 'Temperature (°C)',
-                   'Humidity (%)', 'Wind speed (km/h)', 'Wind direction', 'Sky conditions', 'Cloud Cover (%)', 'UV Index (/10)', 'Rain Amount (cm)']
+    if WEATHERCOM_UNITS_USA:
+        field_names = ['Date - Time', 'Temperature (°F)',
+                       'Humidity (%)', 'Wind speed (mph)', 'Wind direction', 'Sky conditions', 'Cloud Cover (%)', 'UV Index (/10)', 'Rain Amount (in)']
+    else:
+        field_names = ['Date - Time', 'Temperature (°C)',
+                   'Humidity (%)', 'Wind speed (km/h)', 'Wind direction', 'Sky conditions', 'Cloud Cover (%)', 'UV Index (/10)', 'Rain Amount (mm)']
     list2CSV(field_names, joined_data, filename)
 
 
