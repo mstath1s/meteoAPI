@@ -40,6 +40,14 @@ def meteogrGetAllHumidity(soup):
 
     return listStr2Flt(source_humidity_list)
 
+def meteogrGetAllDustConcentration(soup):
+    source_dust = soup.find_all("td", class_=re.compile("innerTableCell dustD"))
+    
+    source_dust_list = filterResultSet2list(source_dust, '>\d*<', '<', '>')
+    
+    return listStr2Flt(source_dust_list)
+
+
 def meteogrGetAllWindSpeeds(soup):
     source_ws = soup.find_all("td", class_= re.compile("innerTableCell anemosfull"))
     
@@ -77,7 +85,7 @@ def meteogrGetTuple(url):
 
     page = requests.get(url, headers)
     
-    if page.status_code==200:
+    if page.status_code == 200:
         printSuccessMsg('Success!')
 
     soup = BeautifulSoup(page.content, 'html.parser')
@@ -104,61 +112,35 @@ def meteogrGetTuple(url):
     # Get sky conditions
     skyCondition = meteogrGetAllSkyConditions(soup)
 
+    # Get dust concentration
+    dust = meteogrGetAllDustConcentration(soup)
+
     # Compute time interval
     date_init = date.today()
     if (time_init.strftime('%H:%M') == '00:00') & (datetime.now().strftime("%H:%M") < '23:59'):
         date_init = date_init + timedelta(days=1)
     print(date_init.strftime('%d/%m/%Y'))
     
-    hours=[]
+    hours = []
     time = datetime.combine(date_init, time_init)
     time_change = timedelta(hours=METEOGR_TIME_PERIOD_HOURS)
     for i in range(len(temp)):
         hours.append(time)
         time = time + time_change
 
-    ### *** DEBUG ***
-    # print('Temperatures')
-    # for row in temp:
-    #     print(row)
-
-    # print('Humidity ')
-    # for row in humidity:
-    #     print(row)
-    
-    # print('Hours ')
-    # for row in hours:
-    #     print(row)
-
-    # print('Windspeed')
-    # for row in ws:
-    #     print(row)
-
-    # print("\n")
-    # print(len(hours))
-    # print(len(temp))
-    # print(len(humidity))
-    # print(len(ws))
-
-    return location, hours, temp, humidity, ws, wd, skyCondition
+    return location, hours, temp, humidity, ws, wd, skyCondition, dust
 
 
 def meteogrJoinTuple(url):
-    location, hours, temp, humidity, ws, wd, skyCondition = meteogrGetTuple(url)
+    location, hours, temp, humidity, ws, wd, skyCondition, dust = meteogrGetTuple(url)
     
     hours_new_format = []
     for hour in hours:
         hours_new_format.append(hour.strftime(METEOGR_DAYTIME_FORMAT_CSV))
 
-    joined_data = list(zip(hours_new_format,
-                       temp, humidity, ws, wd, skyCondition))
+    joined_data = list(zip(hours_new_format, temp, humidity, ws, wd, skyCondition, dust))
     
     return joined_data, location
-
-def meteogrPrintAllData(url):
-    joined_data, location = meteogrJoinTuple(url)
-    for data in joined_data:
-        print(data)
 
 
 def meteogrSaveAllDataCSV(url, filename=''):
@@ -166,10 +148,14 @@ def meteogrSaveAllDataCSV(url, filename=''):
     if not filename:
         filename = location + '_' + datetime.now().strftime(METEOGR_DAYTIME_FORMAT_FNAME) + '.csv'
 
-    field_names = ['Date - Time', 'Temperature (°C)',
-                   'Humidity (%)', 'Wind speed (km/h)', 'Wind direction', 'Sky conditions']
+    field_names = ['Date - Time', 'Temperature (°C)', 'Humidity (%)', 'Wind speed (km/h)', 'Wind direction', 'Sky conditions', 'Dust concentration (µg/m³)']
     list2CSV(field_names, joined_data, filename)
 
+
+def meteogrPrintAllData(url):
+    joined_data, location = meteogrJoinTuple(url)
+    for data in joined_data:
+        print(data)
 
 def meteogrPlotTemperature(temp, hours, location='', savefig=False, filename=''):
     if savefig == True:
